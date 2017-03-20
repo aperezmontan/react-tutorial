@@ -1,4 +1,9 @@
 var React = require('react');
+var styles = require('../styles');
+var Link = require('react-router').Link;
+var PropTypes = React.PropTypes;
+var RestaurantDetails = require('./RestaurantDetails');
+var RestaurantDetailsWrapper = require('./RestaurantDetailsWrapper');
 
 function puke (obj) {
   return <pre>{JSON.stringify(obj, null, ' ')}</pre>
@@ -7,7 +12,33 @@ function puke (obj) {
 function ConfirmBattle (props) {
   return props.isLoading === true
     ? <p> LOADING ! </p>
-    : <div> CONFIRM BATTLE: {puke(props)} </div>
+    : <div className="jumbotron col-sm-12 text-center" style={styles.transparentBg}>
+        <h1> Confirm Restaurants </h1>
+        <div className="col-sm-8 col-sm-offset-2">
+          <RestaurantDetailsWrapper header="Restaurant One">
+            <RestaurantDetails info={props.restaurantInfo[0]} />
+          </RestaurantDetailsWrapper>
+          <RestaurantDetailsWrapper header="Restaurant Two">
+            <RestaurantDetails info={props.restaurantInfo[1]} />
+          </RestaurantDetailsWrapper>
+        </div>
+        <div className="col-sm-8 col-sm-offset-2">
+          <div className="col-sm-12" style={styles.space}>
+            <button type="button" className="btn btn-lg btn-success" onClick={props.onInitiateBattle}> INITIATE BATTLE </button>
+          </div>
+          <div className="col-sm-12" style={styles.space}>
+            <Link to="/restaurantOne">
+              <button type="button" className="btn btn-lg btn-danger"> Reselect Restaurants </button>
+            </Link>
+          </div>
+        </div>
+      </div>
+}
+
+ConfirmBattle.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
+  onInitiateBattle: PropTypes.func.isRequired,
+  restaurantInfo: PropTypes.array.isRequired
 }
 
 module.exports = ConfirmBattle;

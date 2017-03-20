@@ -5,6 +5,7 @@ import Main from '../components/Main.js';
 import Home from '../components/Home.js';
 import PromptContainer from '../containers/PromptContainer.js';
 import ConfirmBattleContainer from '../containers/ConfirmBattleContainer.js';
+import ResultsContainer from '../containers/ResultsContainer.js';
 
 const routes = (
   <Router history={hashHistory}>
@@ -13,6 +14,7 @@ const routes = (
       <Route path='restaurantOne' header="1st Place" component={PromptContainer} />
       <Route path='restaurantTwo/:restaurantOne' header="2nd Place" component={PromptContainer} />
       <Route path='battle' component={ConfirmBattleContainer} />
+      <Route path='results' component={ResultsContainer} />
     </Route>
   </Router>
 )

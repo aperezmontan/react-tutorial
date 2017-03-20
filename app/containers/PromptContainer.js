@@ -44,7 +44,7 @@ var PromptContainer = React.createClass({
         restaurant={this.state.restaurant}
         restaurantSearch={this.state.restaurantSearch}
       />
-    )
+    );
   }
 });
 
