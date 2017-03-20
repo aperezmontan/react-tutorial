@@ -8,18 +8,13 @@ var PromptContainer = React.createClass({
   },
   getInitialState: function () {
     return{
-      'restaurant': '',
-      'restaurantSearch': []
+      'restaurant': ''
     }
   },
   handleUserInput: function (e) {
     this.setState({
-      'restaurant': e.target.value
+      'restaurant': e.target.value,
     })
-
-    setTimeout(function() {
-      this.searchRestaurants(this.state.restaurant)
-    }.bind(this), 2000);
   },
   handleSubmitUser: function (e) {
     e.preventDefault();
@@ -40,16 +35,9 @@ var PromptContainer = React.createClass({
       this.context.router.push('/restaurantTwo/' + this.state.restaurant)
     }
   },
-  searchRestaurants: function (restaurant) {
-    var restaurantSearch = salidoHelpers.getRestaurantSearch([restaurant]);
-    this.setState({
-      'restaurantSearch': restaurantSearch
-    })
-  },
   render: function() {
-    console.log(this.state.restaurantSearch);
     return(
-      <Prompt 
+      <Prompt
         header={this.props.route.header}
         onSubmitUser={this.handleSubmitUser}
         updateUserInput={this.handleUserInput}

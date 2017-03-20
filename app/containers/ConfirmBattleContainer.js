@@ -13,11 +13,18 @@ var ConfirmBattleContainer = React.createClass({
     }
   },
   componentDidMount: function () {
-    salidoHelpers.getRestaurantInfo([query.restaurantOne, query.restaurantTwo]);
+    query = this.props.location.query;
+    salidoHelpers.getRestaurantInfo([query.restaurantOne, query.restaurantTwo])
+      .then(function(restaurants) {
+        this.setState({
+          isLoading: false,
+          restaurantInfo: [restaurants[0], restaurants[1]]
+        })
+      }.bind(this));
   },
   render: function() {
     return(
-      <ConfirmBattle 
+      <ConfirmBattle
         isLoading={this.state.isLoading}
         restaurantInfo={this.state.restaurantInfo}
       />
