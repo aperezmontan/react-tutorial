@@ -1,4 +1,5 @@
 var React = require('react');
+var MainContainer = require('../containers/MainContainer');
 var styles = require('../styles');
 var Link = require('react-router').Link;
 var PropTypes = React.PropTypes;
@@ -12,7 +13,7 @@ function puke (obj) {
 function ConfirmBattle (props) {
   return props.isLoading === true
     ? <p> LOADING ! </p>
-    : <div className="jumbotron col-sm-12 text-center" style={styles.transparentBg}>
+    : <MainContainer>
         <h1> Confirm Restaurants </h1>
         <div className="col-sm-8 col-sm-offset-2">
           <RestaurantDetailsWrapper header="Restaurant One">
@@ -32,7 +33,7 @@ function ConfirmBattle (props) {
             </Link>
           </div>
         </div>
-      </div>
+      </MainContainer>
 }
 
 ConfirmBattle.propTypes = {
