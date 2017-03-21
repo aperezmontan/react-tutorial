@@ -5,6 +5,7 @@ var styles = require('../styles');
 var RestaurantDetails = require('./RestaurantDetails');
 var RestaurantDetailsWrapper = require('./RestaurantDetailsWrapper');
 var Link = require('react-router').Link;
+var Loading = require('./Loading');
 
 function StartOver () {
   return (
@@ -21,7 +22,7 @@ function StartOver () {
 function Results (props) {
   if (props.isLoading === true) {
     return (
-      <p> LOADING </p>
+      <Loading />
     )
   }
   

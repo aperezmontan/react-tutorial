@@ -5,6 +5,7 @@ var Link = require('react-router').Link;
 var PropTypes = React.PropTypes;
 var RestaurantDetails = require('./RestaurantDetails');
 var RestaurantDetailsWrapper = require('./RestaurantDetailsWrapper');
+var Loading = require('./Loading');
 
 function puke (obj) {
   return <pre>{JSON.stringify(obj, null, ' ')}</pre>
@@ -12,7 +13,7 @@ function puke (obj) {
 
 function ConfirmBattle (props) {
   return props.isLoading === true
-    ? <p> LOADING ! </p>
+    ? <Loading speed={1000} text="Please Wait"/>
     : <MainContainer>
         <h1> Confirm Restaurants </h1>
         <div className="col-sm-8 col-sm-offset-2">
