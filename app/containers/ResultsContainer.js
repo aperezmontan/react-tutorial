@@ -1,24 +1,28 @@
-var React = require('react');
-var Results = require('../components/Results');
-var salidoHelpers = require('../utils/salidoHelpers');
+import React, { Component } from 'react';
 
-var ResultsContainer = React.createClass({
-  getInitialState: function () {
-    return {
+import Results from '../components/Results';
+import { battle } from '../utils/salidoHelpers';
+
+class ResultsContainer extends Component {
+  constructor () {
+    super ()
+    this.state = {
       isLoading: true,
       scores: []
     }
-  },
-  componentDidMount: function () {
-    salidoHelpers.battle(this.props.location.state.restaurantInfo)
-      .then(function (scores) {
-        this.setState({
-          isLoading: false,
-          scores: scores
-        })
-      }.bind(this))
-  },
-  render: function () {
+  }
+  async componentDidMount () {
+    try {
+      const scores = await battle(this.props.location.state.restaurantInfo);
+      this.setState({
+        isLoading: false,
+        scores
+      })
+    } catch (error) {
+      console.warn("Problem with battle", error);
+    }
+  }
+  render () {
     return(
       <Results 
         info={this.props.location.state.restaurantInfo} 
@@ -27,6 +31,6 @@ var ResultsContainer = React.createClass({
       />
     )
   }
-})
+}
 
-module.exports = ResultsContainer;
+export default ResultsContainer;

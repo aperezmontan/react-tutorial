@@ -1,28 +1,27 @@
-var React = require('react');
-var styles = require('../styles');
-var PropTypes = React.PropTypes;
+import React, { PropTypes } from 'react';
+import { container, content } from '../styles';
 
-var Loading = React.createClass({
+const Loading = React.createClass({
   propTypes: {
     speed: PropTypes.number,
     text: PropTypes.string
   },
-  getDefaultProps: function () {
+  getDefaultProps () {
     return{
       speed: 300,
       text: 'Loading'
     }
   },
-  getInitialState: function () {
+  getInitialState () {
     this.originalText = this.props.text;
     return {
       text: this.originalText
     }
   },
-  componentDidMount: function () {
-    var stopper = this.originalText + '...';
+  componentDidMount () {
+    const stopper = this.originalText + '...';
 
-    this.interval = setInterval(function () {
+    this.interval = setInterval(() => {
       if (this.state.text === stopper){
         this.setState({
           text: this.originalText
@@ -32,18 +31,18 @@ var Loading = React.createClass({
           text: this.state.text + '.'
         })
       }
-    }.bind(this), this.props.speed)
+    }, this.props.speed)
   },
-  componentWillUnmount: function () {
+  componentWillUnmount () {
     clearInterval(this.interval);
   },
-  render: function () {
+  render () {
     return (
-      <div style={styles.container}>
-        <p style={styles.content}> {this.state.text} </p>
+      <div style={container}>
+        <p style={content}> {this.state.text} </p>
       </div>
     )
   }
 });
 
-module.exports = Loading;
+export default Loading;

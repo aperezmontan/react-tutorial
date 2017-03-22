@@ -1,51 +1,54 @@
-var React = require('react');
-var Prompt = require('../components/Prompt.js')
-var salidoHelpers = require('../utils/salidoHelpers.js');
+import React, { Component } from 'react';
 
-var PromptContainer = React.createClass({
-  contextTypes: {
-    router: React.PropTypes.object.isRequired
-  },
-  getInitialState: function () {
-    return{
-      'restaurant': ''
+import Prompt from '../components/Prompt.js';
+
+class PromptContainer extends Component {
+  constructor () {
+    super ()
+    this.state = {
+      restaurant: ''
     }
-  },
-  handleUserInput: function (e) {
+  }
+  handleUserInput (e) {
     this.setState({
       'restaurant': e.target.value,
     })
-  },
-  handleSubmitUser: function (e) {
+  }
+  handleSubmitUser (e) {
     e.preventDefault();
-    var restaurant = this.state.restaurant;
+    const restaurant = this.state.restaurant;
     this.setState({
       restaurant: ''
     })
 
-    if (this.props.routeParams.restaurantOne) {
+    const { restaurantOne } = this.props.routeParams;
+    if (restaurantOne) {
       this.context.router.push({
         pathname: 'battle',
         query: {
-          restaurantOne: this.props.routeParams.restaurantOne,
+          restaurantOne,
           restaurantTwo: this.state.restaurant
         }
       })
     } else {
-      this.context.router.push('/restaurantTwo/' + this.state.restaurant)
+      this.context.router.push(`/restaurantTwo/${this.state.restaurant}`)
     }
-  },
-  render: function() {
+  }
+  render () {
     return(
       <Prompt
         header={this.props.route.header}
-        onSubmitUser={this.handleSubmitUser}
-        updateUserInput={this.handleUserInput}
+        onSubmitUser={ (event) => this.handleSubmitUser(event) }
+        updateUserInput={ (event) => this.handleUserInput(event) }
         restaurant={this.state.restaurant}
         restaurantSearch={this.state.restaurantSearch}
       />
-    );
+    )
   }
-});
+}
 
-module.exports = PromptContainer;
+PromptContainer.contextTypes = {
+  router: React.PropTypes.object.isRequired
+}
+
+export default PromptContainer;

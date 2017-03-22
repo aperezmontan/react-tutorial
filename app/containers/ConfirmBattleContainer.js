@@ -1,44 +1,50 @@
-var React = require('react');
-var ConfirmBattle = require('../components/ConfirmBattle.js');
-var salidoHelpers = require('../utils/salidoHelpers.js');
+import React, { Component } from 'react';
 
-var ConfirmBattleContainer = React.createClass({
-  contextTypes: {
-    router: React.PropTypes.object.isRequired
-  },
-  getInitialState: function () {
-    return{
+import ConfirmBattle from '../components/ConfirmBattle.js';
+import { getRestaurantInfo } from '../utils/salidoHelpers.js';
+
+class ConfirmBattleContainer extends Component {
+  constructor () {
+    super ()
+    this.state = {
       isLoading: true,
       restaurantInfo: []
     }
-  },
-  componentDidMount: function () {
-    query = this.props.location.query;
-    salidoHelpers.getRestaurantInfo([query.restaurantOne, query.restaurantTwo])
-      .then(function(restaurants) {
-        this.setState({
-          isLoading: false,
-          restaurantInfo: [restaurants[0], restaurants[1]]
-        })
-      }.bind(this));
-  },
-  handleInitiateBattle: function () {
+  }
+  async componentDidMount () {
+    const query = this.props.location.query;
+
+    try {
+      const restaurants = await getRestaurantInfo([query.restaurantOne, query.restaurantTwo]);
+      this.setState({
+        isLoading: false,
+        restaurantInfo: [restaurants[0], restaurants[1]]
+      })
+    } catch (error) {
+      console.warn("Problem with getRestaurantInfo", error);
+    }
+  }
+  handleInitiateBattle () {
     this.context.router.push({
       pathname: '/results',
       state: {
         restaurantInfo: this.state.restaurantInfo
       }
     })
-  },
-  render: function() {
+  }
+  render () {
     return(
       <ConfirmBattle
         isLoading={this.state.isLoading}
-        onInitiateBattle={this.handleInitiateBattle}
+        onInitiateBattle={ () => this.handleInitiateBattle() }
         restaurantInfo={this.state.restaurantInfo}
       />
-    );
+    )
   }
-});
+}
 
-module.exports = ConfirmBattleContainer;
+ConfirmBattleContainer.contextTypes = {
+  router: React.PropTypes.object.isRequired
+}
+
+export default ConfirmBattleContainer;

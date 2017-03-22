@@ -1,11 +1,10 @@
-var React = require('react');
-var PropTypes = React.PropTypes;
+import React, { PropTypes } from 'react';
 
-function RestaurantInfoWrapper (restaurant) {
+function RestaurantInfoWrapper ({ header, children }) {
   return (
     <div className="col-sm-6">
-      <p className="lead"> {restaurant.header} </p>
-      {restaurant.children}
+      <p className="lead"> {header} </p>
+      {children}
     </div>
   )
 }
@@ -19,4 +18,4 @@ RestaurantInfoWrapper.propTypes = {
   })
 }
 
-module.exports = RestaurantInfoWrapper;
+export default RestaurantInfoWrapper;

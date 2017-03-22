@@ -1,21 +1,20 @@
-var React = require('react');
-var PropTypes = React.PropTypes;
-var transparentBg = require('../styles').transparentBg;
-var Select = require('react-select')
+import React, { PropTypes } from 'react';
+import Select from 'react-select'
 
-function Prompt(props) {
+import { transparentBg } from '../styles';
+
+function Prompt({ header, onSubmitUser, updateUserInput, restaurant }) {
   return(
     <div className="jumbotron col-sm-6 col-sm-offset-3 text-center" style={transparentBg}>
-      <h1> {props.header} </h1>
+      <h1> {header} </h1>
       <div className="col-sm-12">
-        <form onSubmit={props.onSubmitUser}>
+        <form onSubmit={onSubmitUser}>
           <div className="form-group">
             <input
               className="form-control"
               placeholder="restaurant"
-              onChange={props.updateUserInput}
-              // options={props.restaurantSearch}
-              value={props.restaurant}
+              onChange={updateUserInput}
+              value={restaurant}
               type="text"
             />
           </div>
@@ -37,4 +36,4 @@ Prompt.propTypes = {
   restaurant: PropTypes.string.isRequired,
 }
 
-module.exports = Prompt;
+export default Prompt;

@@ -1,7 +1,7 @@
-var axios = require('axios');
+import axios from 'axios';
 
 function getRestaurant (restaurant) {
-  return axios.get('https://api.github.com/users/' + restaurant);
+  return axios.get(`https://api.github.com/users/${restaurant}`);
 };
 
 function calculateScores (restaurants) {
@@ -9,46 +9,43 @@ function calculateScores (restaurants) {
 };
 
 function getRepos (username) {
-  return axios.get('https://api.github.com/users/' + username + '/repos?per_page=100');
+  return axios.get(`https://api.github.com/users/${username}/repos?per_page=100`);
 };
 
-function getRestaurantData (restaurant) {
-  return getRepos(restaurant.login)
-    .then(getTotalStars)
-    .then(function (totalStars) {      
-      return {
-        followers: restaurant.followers,
-        totalStars: totalStars
-      }
-    })
-};
-
-function getTotalStars (repos) {  
-  return repos.data.reduce(function (prevVal, currVal) {
-    return prevVal + currVal.stargazers_count;
-  }, 0)
-};
-
-var helpers = {
-  battle: function (restaurants) {
-    var restaurantOneData = getRestaurantData(restaurants[0]);
-    var restaurantTwoData = getRestaurantData(restaurants[1]);
-
-    return axios.all([restaurantOneData, restaurantTwoData])
-      .then(calculateScores)
-      .catch(function (err) {        
-      })
-  },
-  getRestaurantInfo: function (restaurants) {
-    return axios.all(restaurants.map(function (restaurantInfo) {      
-      return getRestaurant(restaurantInfo)
-    })).then(function (info) {
-      return info.map(function (restaurant) {
-        return restaurant.data;
-      })
-    }).catch(function (err) {      
-    })
+async function getRestaurantData ({ login, followers }) {
+  try {
+    const repos = await getRepos(login);
+    const totalStars = await getTotalStars(repos);
+    return {
+      followers,
+      totalStars
+    }
+  } catch (error) {
+    console.warn("Something went wrong with getRestaurantData", error);
   }
 };
 
-module.exports = helpers;
+function getTotalStars (repos) {  
+  return repos.data.reduce((prevVal, currVal) => prevVal + currVal.stargazers_count, 0)
+};
+
+export async function battle (restaurants) {
+  const restaurantOneData = getRestaurantData(restaurants[0]);
+  const restaurantTwoData = getRestaurantData(restaurants[1]);
+
+  try {
+    const restaurantData = await Promise.all([restaurantOneData, restaurantTwoData]);
+    return await calculateScores(restaurantData);
+  } catch (error) {
+    console.warn("Issue with battle", error);
+  }
+};
+
+export async function getRestaurantInfo (restaurants) {
+  try {
+    const info = await Promise.all(restaurants.map((restaurantInfo) => getRestaurant(restaurantInfo)));
+    return info.map(({ data }) => data)
+  } catch (error) {
+    console.warn("Issue with getting info", error)
+  }
+};
